@@ -1,10 +1,7 @@
-import { useEffect, useState } from 'react';
-
+import styles from './quizPage.module.scss';
+import Quiz from '../../components/quiz/Quiz';
 import Button from '../../components/ui/button/button';
 
-// import timer from '../../utils/timer';
-
-import styles from './quiz.module.scss';
 
 function QuizPage() {
   return (
@@ -21,22 +18,7 @@ function QuizPage() {
         <h2 className={styles.content_title}>
           Какая из следующих планет не имеет естественных спутников?
         </h2>
-        <div className={styles.content_body}>
-          <input type="radio" id="option1" name="options" value="option1" />
-          <label htmlFor="option1">Земля</label>
-          <br />
-          <input type="radio" id="option2" name="options" value="option2" />
-          <label htmlFor="option2">Марс</label>
-          <br />
-          <input type="radio" id="option3" name="options" value="option3" />
-          <label htmlFor="option3">Юпитер</label>
-          <br />
-          <input type="radio" id="option3" name="options" value="option3" />
-          <label htmlFor="option3">Сатурн</label>
-        </div>
-        <div>
-          <Button>Ответить</Button>
-        </div>
+        <Quiz />
       </section>
     </section>
   );
