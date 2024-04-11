@@ -1,9 +1,9 @@
-import './human.styles.scss';
+import styles from './human.module.scss';
 
 function HumanPage() {
   return (
-    <div className="container">
-      <h2 className='container__title'>Human page "Human Anatomy"</h2>
+    <div className={styles.container}>
+      <h2 className={styles.container__title}>Human page "Human Anatomy"</h2>
     </div>
   );
 }

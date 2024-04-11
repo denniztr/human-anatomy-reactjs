@@ -1,0 +1,31 @@
+@import '../../styles/variables.scss';
+
+.container {
+  margin: 20px 0;
+
+  &_background {
+    height: 600px;
+    background-color: $backgroundColor;
+    box-shadow: 0px 8px 10px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+
+  &_content {
+    height: 100%;
+    padding: 50px 0px 0px 50px;
+    position: relative;
+    display: flex;
+  }
+}
+
+.image_wrapper {
+  position: absolute;
+  right: 0;  
+}
+
+
+.text {
+
+  background-color: rgba(255, 255, 255, 50);
+
+}
