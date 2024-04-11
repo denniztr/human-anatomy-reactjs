@@ -1,0 +1,55 @@
+.container {
+  padding: 0 25px 0 25px;
+}
+
+.heading {
+  margin: 0 0 20px;
+  &_action {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &_title {
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  & span {
+    font-size: 12px;
+    color: rgba(128, 128, 128, 1);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &_title {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+  }
+
+  &_body {
+
+    :not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    & input {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+
+    & label {
+      padding-left: 10px;
+    }
+  }
+}
