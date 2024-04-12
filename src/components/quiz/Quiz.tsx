@@ -11,6 +11,8 @@ import { data } from '../../mockdata/quiz';
 const Quiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState();
 
+  const [timer, setTimer] = useState(600);
+
   return (
     <>
       <div className={styles.quiz_container}>
