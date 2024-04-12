@@ -1,30 +1,39 @@
 import styles from './quizPage.module.scss';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { formatTime } from '../../utils/formatTime';
 
-import Quiz from '../../components/quiz/Quiz';
 import Button from '../../components/ui/button/button';
 
-import { formatTime } from '../../utils/formatTime';
+import { data } from '../../mockdata/quiz';
 
 function QuizPage() {
   const [isTestStarted, setIsTestStarted] = useState(false);
   const [time, setTime] = useState(600);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answer, setAnswer] = useState('');
+  const [isTestFinished, setIsTestFinished] = useState(false);
 
-  useEffect(() => {
-    if (isTestStarted) {
-      const interval = setInterval(() => {
-       setTime(prevTime => prevTime - 1);
-  
-         if (time <= 0) { // проверка если время закончилось
-          clearInterval(interval);
-          console.log('Время вышло!');
-        }
-      }, 1000);
-  
-      return () => clearInterval(interval);
+  const { questions } = data;
+  const { question, options, user_answer } = questions[currentQuestion];
+
+  console.log(questions);
+
+  const handleNextQuestionClick = () => {
+    if (answer !== '') {
+      setCurrentQuestion((prevQuestion) => prevQuestion + 1);
+      user_answer.push(answer);
+    } else {
+      console.log('Выберите ответ')
     }
-  }, [isTestStarted, time]);
+
+  };
+  console.log(questions);
+
+  const handleAnswerChange = (event) => {
+    setAnswer(event.target.value);
+  };
+
 
   return (
     <section className={styles.container}>
@@ -33,20 +42,34 @@ function QuizPage() {
           <h1 className={styles.heading_title}>Тестирование</h1>
           <span>{formatTime(time)}</span>
         </div>
-        <div className={styles.step_line}>Steps</div>
+        <div className={styles.step_line}>Вопросов: {questions.length}</div>
       </header>
       <section className={styles.content}>
-        {isTestStarted ? (
+        {isTestFinished ? (
           <>
-            <h2 className={styles.content_title}>
-              Какая из следующих планет не имеет естественных спутников?
-            </h2>
-            <Quiz />
+            <p>Тест закончился</p>
+            <Button onClick={() => setIsTestFinished(false)}>Начать тест заново</Button>
           </>
         ) : (
           <>
-            <Button onClick={() => setIsTestStarted(true)}>Начать тест</Button>
-            <span>после начала теста запустится таймер (будьте готовы)</span>
+            {questions[currentQuestion].question}
+            {options.map((option, index) => (
+              <div key={index}>
+                <input
+                  type="radio"
+                  name="options"
+                  value={option}
+                  onChange={handleAnswerChange}
+                />
+                <label htmlFor="value">{option}</label>
+                <br />
+              </div>
+            ))}
+            <div>
+              <Button onClick={() => handleNextQuestionClick()}>
+                Ответить
+              </Button>
+            </div>
           </>
         )}
       </section>
