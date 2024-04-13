@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import Button from '../../components/ui/button/button';
 
 function MainPage() {
+    localStorage.clear()
+    console.log(localStorage)
   return (
     <section className={styles.container}>
       <div>

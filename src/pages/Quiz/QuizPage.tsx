@@ -1,7 +1,7 @@
 import styles from './quizPage.module.scss';
 
 import { useState, useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { formatTime } from '../../utils/formatTime';
 import Button from '../../components/ui/button/button';
 import { data } from '../../mockdata/quiz';
@@ -9,12 +9,51 @@ import { data } from '../../mockdata/quiz';
 type Answer = string | string[];
 
 function QuizPage() {
-  const [time, setTime] = useState(600);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<Answer>([]);
-  const [isTestFinished, setIsTestFinished] = useState(false);
+  // const [time, setTime] = useState(600);
+
+  const [time, setTime] = useState<number>(
+    parseInt(localStorage.getItem('time') || '600')
+  );
+
+  const [currentQuestion, setCurrentQuestion] = useState<number>(
+    parseInt(localStorage.getItem('currentQuestion') || '0')
+  );
+
+  //const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  // const [answers, setAnswers] = useState<Answer>([]);
+
+  const [answers, setAnswers] = useState<Answer>(
+    JSON.parse(localStorage.getItem('answers') || '[]')
+  );
+  const [isTestFinished, setIsTestFinished] = useState<boolean>(
+    localStorage.getItem('isTestFinished') === 'true' ? true : false
+  );
+  // const [isTestFinished, setIsTestFinished] = useState(false);
 
   const { questions } = data;
+
+  useEffect(() => {
+
+    localStorage.setItem('time', time.toString());
+    localStorage.setItem('currentQuestion', currentQuestion.toString());
+    localStorage.setItem('answers', JSON.stringify(answers));
+    localStorage.setItem('isTestFinished', isTestFinished.toString());
+
+  }, [time, currentQuestion, answers, isTestFinished]);
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime((prev) => prev - 1);
+    }, 1000);
+
+    if (isTestFinished) clearInterval(interval);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [time, isTestFinished]);
+
 
   const { register, handleSubmit } = useForm();
 
@@ -23,26 +62,46 @@ function QuizPage() {
 
     if (currentQuestion + 1 === questions.length) {
       setIsTestFinished(true);
-      console.log('Конец опроса');
+      console.log(localStorage)
+      console.log('Конец опроса!')
     }
 
     setAnswers((prevAnswers) => [...prevAnswers, values]);
-
   };
 
+
+
+  const startTestAgain = () => {
+    console.log('start again and clear ls')
+    localStorage.removeItem('currentQuestion');
+    localStorage.removeItem('answers');
+    localStorage.removeItem('isTestFinished');
+
+    
+    setTime(600);
+    setCurrentQuestion(0);
+    setAnswers([]);
+    setIsTestFinished(false);
+
+    console.log(localStorage)
+  }
 
   return (
     <section className={styles.container}>
       <header className={styles.heading}>
-        <div className={styles.heading_action}>
-          <h1 className={styles.heading_title}>Тестирование</h1>
-          <span>{formatTime(time)}</span>
-        </div>
+        {!isTestFinished && (
+          <div className={styles.heading_action}>
+            <h1 className={styles.heading_title}>Тестирование</h1>
+            <span>{formatTime(time)}</span>
+          </div>
+        )}
       </header>
       <section className={styles.content}>
         {isTestFinished ? (
-          <div>
+          <div className={styles.content__test_result}>
             <p>Тест закончился</p>
+            <p>Время выполнения: {formatTime(time)}</p>
+            <Button onClick={() => startTestAgain()}>Начать тест заново</Button>
           </div>
         ) : (
           <>
