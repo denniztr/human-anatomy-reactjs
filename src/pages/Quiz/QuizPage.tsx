@@ -2,9 +2,13 @@ import styles from './quizPage.module.scss';
 
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+
 import { formatTime } from '../../utils/formatTime';
-import Button from '../../components/ui/button/button';
+
 import { data } from '../../mockdata/quiz';
+
+import Button from '../../components/ui/button/button';
 
 type Answer = string | string[];
 
@@ -12,7 +16,7 @@ function QuizPage() {
   // const [time, setTime] = useState(600);
 
   const [time, setTime] = useState<number>(
-    parseInt(localStorage.getItem('time') || '600')
+    parseInt(localStorage.getItem('time') || '5')
   );
 
   const [currentQuestion, setCurrentQuestion] = useState<number>(
@@ -30,6 +34,8 @@ function QuizPage() {
   );
   // const [isTestFinished, setIsTestFinished] = useState(false);
 
+  const [isTimeOver, setIsTimeOver] = useState(false);
+
   const { questions } = data;
 
   useEffect(() => {
@@ -45,6 +51,11 @@ function QuizPage() {
     }, 1000);
 
     if (isTestFinished) clearInterval(interval);
+
+    if (time === 0) {
+      clearInterval(interval);
+      setIsTimeOver(true);
+    }
 
     return () => {
       clearInterval(interval);
@@ -81,54 +92,64 @@ function QuizPage() {
 
     console.log(localStorage);
   };
-  
+
   const steps = () => {
-    return questions.map((el, index) => (
-      <div 
-        key={index} 
-        className={
-        `
+    return questions.map((_, index) => (
+      <div
+        key={index}
+        className={`
           ${styles.steps__step} 
           ${currentQuestion === index && styles.steps_active}
           ${index < currentQuestion && styles.steps_passed}
-        `
-        }
-      >
-        
-      </div>
+        `}
+      />
     ));
   };
 
   return (
     <section className={styles.container}>
       <header className={styles.heading}>
-        {!isTestFinished && (
+        {!isTestFinished && !isTimeOver && (
           <>
             <div className={styles.heading_action}>
               <h1 className={styles.heading_title}>Тестирование</h1>
               <span>{formatTime(time)}</span>
             </div>
-            <div className={styles.steps}>
-              {steps()}
-            </div>
+            <div className={styles.steps}>{steps()}</div>
           </>
         )}
       </header>
       <section className={styles.content}>
-        {isTestFinished ? (
+        {isTimeOver ? (
+          <div>
+            <p>Время вышло</p>
+            <Link to="/">
+              <Button onClick={() => startTestAgain()}>
+                Вернуться на главную
+              </Button>
+            </Link>
+          </div>
+        ) : isTestFinished ? (
           <div className={styles.content__test_result}>
             <p>Тест закончился</p>
             <p>Время выполнения: {formatTime(time)}</p>
             <Button onClick={() => startTestAgain()}>Начать тест заново</Button>
+            <Link to="/">
+              <Button onClick={() => startTestAgain()}>
+                Вернуться на главную
+              </Button>
+            </Link>
           </div>
         ) : (
           <>
-            {questions[currentQuestion]?.question}
+            <h1 className={styles.content_title}>
+              {questions[currentQuestion]?.question}
+            </h1>
             <form onSubmit={handleSubmit(onSubmit)}>
               {questions[currentQuestion]?.type === 'radio' && (
-                <ul>
+                <ul className={styles.content_options}>
                   {questions[currentQuestion].options?.map((option, index) => (
-                    <li key={index}>
+                    <li key={index} className={styles.content_options__option}>
                       <input
                         type="radio"
                         {...register('ответ', { required: true })}
@@ -140,9 +161,9 @@ function QuizPage() {
                 </ul>
               )}
               {questions[currentQuestion]?.type === 'checkbox' && (
-                <ul>
+                <ul className={styles.content_options}>
                   {questions[currentQuestion].options?.map((option, index) => (
-                    <li key={index}>
+                    <li key={index} className={styles.content_options__option}>
                       <input
                         type="checkbox"
                         {...register('ответ', { required: true })}
@@ -155,6 +176,7 @@ function QuizPage() {
               )}
               {questions[currentQuestion]?.type === 'textarea' && (
                 <textarea
+                  className={styles.content_options__textarea}
                   rows={6}
                   cols={100}
                   {...register('ответ', { required: true })}

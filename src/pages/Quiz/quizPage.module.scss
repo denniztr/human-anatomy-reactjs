@@ -3,7 +3,7 @@
 }
 
 .heading {
-  margin: 0 0 20px;
+  //margin: 0 0 20px;
   &_action {
     display: flex;
     align-items: center;
@@ -16,11 +16,15 @@
   }
 
   & span {
-    font-size: 12px;
-    color: rgba(128, 128, 128, 1);
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(209, 213, 219, 1);
+    border-radius: 8px;
+    color: rgba(0, 0, 0, 1);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     font-weight: 400;
-    line-height: 1.5;
-    letter-spacing: 0.5px;
+    text-align: center;
+    font-size: 14px;
+    padding: 2px 20px;
   }
 
   &_steps {
@@ -35,32 +39,36 @@
       background-color: rgba(128, 128, 128, 0.501);
     }
   }
-  
 }
 
 .steps {
   display: flex;
   gap: 5px;
+  padding: 10px 0 10px 0;
 
   &__step {
     width: 50px;
     height: 15px;
     border: 1px solid rgba(128, 128, 128, 0.501);
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(209, 213, 219, 1);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   }
 
   &_active {
-    background-color: rgba(242, 0, 0, 0.300);
+    background-color: rgba(30, 30, 30, 0.4);
   }
 
   &_passed {
-    background-color: rgba(242, 0, 0, 1);
+    background-color: rgba(30, 30, 30, 0.8);
   }
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  //gap: 20px;
 
   &_title {
     font-size: 18px;
@@ -69,4 +77,22 @@
     letter-spacing: 0.5px;
   }
 
+  &_options {
+    padding: 12px 0 12px 0;
+
+    :not(:last-child) {
+      padding-bottom: 10px;
+    }
+
+    & input {
+      margin-right: 10px;
+      cursor: pointer;
+      color: red;
+      background-color: red;
+    }
+
+    &__textarea {
+      margin: 12px 0 12px 0;
+    }
+  }
 }
