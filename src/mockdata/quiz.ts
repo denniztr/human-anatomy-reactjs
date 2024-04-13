@@ -1,5 +1,4 @@
 export const data = {
-  totalQuestions: 4,
   questions: [
     {
       question: 'Какая планета Солнечной системы является самой большой?',

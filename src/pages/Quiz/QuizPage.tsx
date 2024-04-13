@@ -33,15 +33,11 @@ function QuizPage() {
   const { questions } = data;
 
   useEffect(() => {
-
     localStorage.setItem('time', time.toString());
     localStorage.setItem('currentQuestion', currentQuestion.toString());
     localStorage.setItem('answers', JSON.stringify(answers));
     localStorage.setItem('isTestFinished', isTestFinished.toString());
-
   }, [time, currentQuestion, answers, isTestFinished]);
-
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -55,7 +51,6 @@ function QuizPage() {
     };
   }, [time, isTestFinished]);
 
-
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (values: []) => {
@@ -63,37 +58,60 @@ function QuizPage() {
 
     if (currentQuestion + 1 === questions.length) {
       setIsTestFinished(true);
-      console.log(localStorage)
-      console.log('Конец опроса!')
+      console.log(localStorage);
+      console.log('Конец опроса!');
     }
 
     setAnswers((prevAnswers) => [...prevAnswers, values]);
   };
 
-
-
   const startTestAgain = () => {
-    console.log('----Очищаем localStorage и состояния, начинаем тест ещё раз с пустыми значениями----')
+    console.log(
+      '----Очищаем localStorage и состояния, начинаем тест ещё раз с пустыми значениями----'
+    );
 
     localStorage.removeItem('currentQuestion');
     localStorage.removeItem('answers');
     localStorage.removeItem('isTestFinished');
 
-    
     setTime(600);
     setCurrentQuestion(0);
     setAnswers([]);
     setIsTestFinished(false);
-  }
+
+    console.log(localStorage);
+  };
+  
+  const steps = () => {
+    return questions.map((el, index) => (
+      <div 
+        key={index} 
+        className={
+        `
+          ${styles.steps__step} 
+          ${currentQuestion === index && styles.steps_active}
+          ${index < currentQuestion && styles.steps_passed}
+        `
+        }
+      >
+        
+      </div>
+    ));
+  };
 
   return (
     <section className={styles.container}>
       <header className={styles.heading}>
         {!isTestFinished && (
-          <div className={styles.heading_action}>
-            <h1 className={styles.heading_title}>Тестирование</h1>
-            <span>{formatTime(time)}</span>
-          </div>
+          <>
+            <div className={styles.heading_action}>
+              <h1 className={styles.heading_title}>Тестирование</h1>
+              <span>{formatTime(time)}</span>
+            </div>
+            <div className={styles.steps}>
+              {steps()}
+            </div>
+          </>
         )}
       </header>
       <section className={styles.content}>
