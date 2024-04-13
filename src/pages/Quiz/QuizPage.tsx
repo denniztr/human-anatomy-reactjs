@@ -16,7 +16,7 @@ function QuizPage() {
   // const [time, setTime] = useState(600);
 
   const [time, setTime] = useState<number>(
-    parseInt(localStorage.getItem('time') || '5')
+    parseInt(localStorage.getItem('time') || '600')
   );
 
   const [currentQuestion, setCurrentQuestion] = useState<number>(
@@ -62,9 +62,10 @@ function QuizPage() {
     };
   }, [time, isTestFinished]);
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: {errors} } = useForm();
 
   const onSubmit = (values: []) => {
+    console.log(values)
     setCurrentQuestion((prevQuestion) => prevQuestion + 1);
 
     if (currentQuestion + 1 === questions.length) {
@@ -78,7 +79,7 @@ function QuizPage() {
 
   const startTestAgain = () => {
     console.log(
-      '----Очищаем localStorage и состояния, начинаем тест ещё раз с пустыми значениями----'
+      '----Очищаем localStorage и состояния----'
     );
 
     localStorage.removeItem('currentQuestion');
@@ -181,6 +182,7 @@ function QuizPage() {
                   cols={100}
                   {...register('ответ', { required: true })}
                 />
+
               )}
               <div>
                 <Button type="submit">Ответить</Button>
