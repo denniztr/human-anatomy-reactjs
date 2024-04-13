@@ -42,6 +42,7 @@ function QuizPage() {
   }, [time, currentQuestion, answers, isTestFinished]);
 
 
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((prev) => prev - 1);
@@ -72,7 +73,8 @@ function QuizPage() {
 
 
   const startTestAgain = () => {
-    console.log('start again and clear ls')
+    console.log('----Очищаем localStorage и состояния, начинаем тест ещё раз с пустыми значениями----')
+
     localStorage.removeItem('currentQuestion');
     localStorage.removeItem('answers');
     localStorage.removeItem('isTestFinished');
@@ -82,8 +84,6 @@ function QuizPage() {
     setCurrentQuestion(0);
     setAnswers([]);
     setIsTestFinished(false);
-
-    console.log(localStorage)
   }
 
   return (
