@@ -10,10 +10,14 @@ html,
 body,
 #root {
   height: 100%;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 400;
 }
 
 body {
   background-color: $backgroundColor;
+}
+
+ul {
+  list-style: none;
 }

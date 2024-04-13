@@ -1,30 +1,34 @@
 export const data = {
-  totalQuestions: 5,
+  totalQuestions: 4,
   questions: [
     {
       question: 'Какая планета Солнечной системы является самой большой?',
       options: ['Марс','Юпитер','Земля','Венера'],
-      user_answer: [],
+      type: 'radio',
     },
     {
       question: 'Какая из следующих планет не имеет естественных спутников?',
       options: ['Земля','Марс','Юпитер','Сатурн'],
-      user_answer: [],
+      type: 'radio',
     },
     {
-      question: 'Вопрос 3',
+      question: 'Вопрос с двемя ответами',
       options: ['1','2','3','4'],
-      user_answer: [],
+      type: 'checkbox',
     },
     {
-      question: 'Вопрос 4',
-      options: ['15','23','31','44'],
-      user_answer: [],
+      question: 'Вопрос с полеввом вода',
+      type: 'textarea',
     },
     {
-      question: 'Вопрос 5',
-      options: ['11','22','33','44'],
-      user_answer: [],
+      question: 'Какая планета Солнечной системы является самой большой?',
+      options: ['Марс','Юпитер','Земля','Венера'],
+      type: 'radio',
+    },
+    {
+      question: 'Вопрос с двемя ответами',
+      options: ['1','2','3','4'],
+      type: 'checkbox',
     },
   ]
 }
